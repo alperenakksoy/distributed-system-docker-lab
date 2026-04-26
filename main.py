@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import redis
 
-cache = redis.Redis(host="redis", port=6379, decode_responses=True)
+cache = redis.Redis(host="redis", port=6379)
 app = FastAPI()
 
 class DataModel(BaseModel):
@@ -16,6 +16,8 @@ def health_check():
 @app.get("/data/{key}")
 def read_data(key: str):
     value = cache.get(key)
+    if value is not None:
+        value = value.decode("utf-8")
     return {"key": key, "value": value}
 
 @app.post("/data")
