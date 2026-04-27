@@ -1,7 +1,5 @@
 fastapi
 redis
 uvicorn
-
 pydantic
-booktype
 requests
